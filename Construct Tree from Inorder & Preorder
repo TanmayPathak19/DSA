@@ -1,32 +1,24 @@
-/* Find the Largest Almost Missing Integer */
-
-import java.util.*;
+/* Construct Tree from Inorder & Preorder */
 
 class Solution {
-    public int largestInteger(int[] nums, int k) {
-        int n = nums.length;
-        int[] count = new int[51];
-
-        for (int i = 0; i <= n - k; i++) {
-            Set<Integer> set = new HashSet<>();
-
-            for (int j = i; j < i + k; j++) {
-                set.add(nums[j]);
-            }
-
-            for (int x : set) {
-                count[x]++;
-            }
-        }
-
-        int ans = -1;
-
-        for (int x = 0; x <= 50; x++) {
-            if (count[x] == 1) {
-                ans = x;
+    public static Node buildTree(int inorder[], int preorder[]) {
+        int n = inorder.length;
+        return build(0, n-1, 0, n-1, inorder, preorder);
+    }
+    public static Node build(int preLo, int preHi, int inLo, int inHi, int inorder[], int preorder[]) {
+        if(preLo > preHi || inLo > inHi) return null;
+        int val = preorder[preLo];
+        Node root = new Node(val);
+        int r = 0;
+        for(int i = inLo; i <=inHi; i++){
+            if(inorder[i] == val){
+                r = i;
+                break;
             }
         }
-
-        return ans;
+        int cnt = r - inLo;
+        root.left = build(preLo+1, preLo+cnt, inLo, r-1, inorder, preorder);
+        root.right = build(preLo+cnt+1, preHi, r+1, inHi, inorder, preorder);
+        return root;
     }
 }
