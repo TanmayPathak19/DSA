@@ -1,1 +1,1 @@
-# DSA-QOTD
+# DSA Practice
